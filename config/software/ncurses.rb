@@ -77,6 +77,7 @@ build do
   end
 
 if platform == "aix"
+  # FIXME: harcoded path nastiness and move to patches directory (and make real diffs and document WTF)
   command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/mk-1st.awk /var/cache/omnibus/src/ncurses-5.9/"
   command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/configure /var/cache/omnibus/src/ncurses-5.9/"
 end
