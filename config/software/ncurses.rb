@@ -76,6 +76,10 @@ build do
     patch :source => 'ncurses-5.9-solaris-xopen_source_extended-detection.patch', :plevel => 0
   end
 
+if platform == "aix"
+  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/mk-1st.awk /var/cache/omnibus/src/ncurses-5.9/"
+  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/configure /var/cache/omnibus/src/ncurses-5.9/"
+end
   # build wide-character libraries
   command(["./configure",
            "--prefix=#{install_dir}/embedded",
