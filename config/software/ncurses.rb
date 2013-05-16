@@ -25,11 +25,19 @@ source :url => "http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz",
 
 relative_path "ncurses-5.9"
 
-env = {
-  "LD_RUN_PATH" => "#{install_dir}/embedded/lib",
-  "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-  "LDFLAGS" => "-L#{install_dir}/embedded/lib"
-}
+env = case platform
+      when "aix"
+        {
+          "LDFLAGS" => "-Wl,-blibpath:#{install_dir}:/usr/lib:/lib -L#{install_dir}/embedded/lib",
+          "CFLAGS" => "-I#{install_dir}/embedded/include"
+        }
+      else
+        {
+          "LD_RUN_PATH" => "#{install_dir}/embedded/lib",
+          "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
+          "LDFLAGS" => "-L#{install_dir}/embedded/lib"
+        }
+      end
 
 if platform == "solaris2"
   env.merge!({"LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include -static-libgcc"})
@@ -76,11 +84,12 @@ build do
     patch :source => 'ncurses-5.9-solaris-xopen_source_extended-detection.patch', :plevel => 0
   end
 
-if platform == "aix"
-  # FIXME: harcoded path nastiness and move to patches directory (and make real diffs and document WTF)
-  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/mk-1st.awk /var/cache/omnibus/src/ncurses-5.9/"
-  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/configure /var/cache/omnibus/src/ncurses-5.9/"
-end
+#if platform == "aix"
+#  # FIXME: harcoded path nastiness and move to patches directory (and make real diffs and document WTF)
+#  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/mk-1st.awk /var/cache/omnibus/src/ncurses-5.9/"
+#  command "cp -f /opt/chef-build/omnibus-software/config/software/aix-files/configure /var/cache/omnibus/src/ncurses-5.9/"
+#end
+
   # build wide-character libraries
   command(["./configure",
            "--prefix=#{install_dir}/embedded",
