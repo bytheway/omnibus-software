@@ -29,7 +29,7 @@ configure_env =
   case platform
   when "aix"
     {
-      "LDFLAGS" => "-Wl,-blibpath:#{install_dir}:/usr/lib:/lib -L#{install_dir}/embedded/lib",
+      "LDFLAGS" => "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
       "CFLAGS" => "-I#{install_dir}/embedded/include"
     }
   when "mac_os_x"
