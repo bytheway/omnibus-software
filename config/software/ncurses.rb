@@ -96,6 +96,7 @@ build do
            "--with-shared",
            "--with-termlib",
            "--without-debug",
+           "--without-normal", # AIX doesn't like building static libs
            "--enable-overwrite",
            "--enable-widec"].join(" "),
           :env => env)
