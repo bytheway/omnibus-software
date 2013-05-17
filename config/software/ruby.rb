@@ -16,7 +16,6 @@
 #
 
 name "ruby"
-version "1.9.3-p286"
 
 dependency "zlib"
 dependency "ncurses"
@@ -27,8 +26,17 @@ dependency "libiconv"
 dependency "gdbm" if (platform == "mac_os_x" or platform == "freebsd")
 dependency "libgcc" if (platform == "solaris2" and Omnibus.config.solaris_compiler == "gcc")
 
-source :url => "http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-#{version}.tar.gz",
-       :md5 => 'e2469b55c2a3d0d643097d47fe4984bb'
+# XXX: need p429 for AIX but want to decouple AIX MVP from the tempo of upgrading ruby for everyone else
+case platform
+when "aix"
+  version "1.9.3-p429"
+  source :url => "http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-#{version}.tar.gz",
+         :md5 => '993c72f7f805a9eb453f90b0b7fe0d2b'
+else
+  version "1.9.3-p286"
+  source :url => "http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-#{version}.tar.gz",
+         :md5 => 'e2469b55c2a3d0d643097d47fe4984bb'
+end
 
 relative_path "ruby-#{version}"
 
@@ -57,8 +65,8 @@ env =
   when "aix"
     {
       # these are flags from 1.9.2-p320, -O2 horribly broke requiring openssl...
-      "CFLAGS" => "-O -I/opt/freeware/include -Wall -DOSSL_NO_CONF_API=1",
-      "LDFLAGS" => "-L/opt/freeware/lib -Wl,-blibpath:/opt/freeware/lib:/usr/lib:/lib"
+      "CFLAGS" => "-O -I#{install_dir}/embedded/include -Wall -DOSSL_NO_CONF_API=1",
+      "LDFLAGS" => "-L#{install_dir}/embedded/lib -Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib",
     }
   else
     {
@@ -70,16 +78,19 @@ env =
 build do
   configure_command = ["./configure",
                        "--prefix=#{install_dir}/embedded",
-                       "--with-opt-dir=#{install_dir}/embedded",
                        "--with-out-ext=fiddle",
                        "--enable-shared",
                        "--enable-libedit",
                        "--with-ext=psych",
                        "--disable-install-doc"]
 
-  if platform == "freebsd"
+  case platform
+  when "aix"
+    # --with-opt-dir causes ruby to send bogus commands to the AIX linker
+  when "freebsd"
     configure_command << "--without-execinfo"
-  elsif platform == "smartos"
+    configure_command << "--with-opt-dir=#{install_dir}/embedded"
+  when "smartos"
     # Opscode patch - someara@opscode.com
     # GCC 4.7.0 chokes on mismatched function types between OpenSSL 1.0.1c and Ruby 1.9.3-p286
     patch :source => "ruby-openssl-1.0.1c.patch", :plevel => 1
@@ -93,6 +104,9 @@ build do
     # From RVM forum
     # https://github.com/wayneeseguin/rvm/commit/86766534fcc26f4582f23842a4d3789707ce6b96
     configure_command << "ac_cv_func_dl_iterate_phdr=no"
+    configure_command << "--with-opt-dir=#{install_dir}/embedded"
+  else
+    configure_command << "--with-opt-dir=#{install_dir}/embedded"
   end
 
   command configure_command.join(" "), :env => env
