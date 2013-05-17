@@ -56,10 +56,9 @@ env =
     end
   when "aix"
     {
-      # FIXME: this cannot possibly work?  There's no -R flag so we'll pull in libraries from system.  Does the health-check actually work???
-      #"CFLAGS" => "-I#{install_dir}/embedded/include",
-      #"LDFLAGS" => "-L#{install_dir}/embedded/lib -lz"
-      "LDFLAGS" => "-lz"
+      # these are flags from 1.9.2-p320, -O2 horribly broke requiring openssl...
+      "CFLAGS" => "-O -I/opt/freeware/include -Wall -DOSSL_NO_CONF_API=1",
+      "LDFLAGS" => "-L/opt/freeware/lib -Wl,-blibpath:/opt/freeware/lib:/usr/lib:/lib"
     }
   else
     {
