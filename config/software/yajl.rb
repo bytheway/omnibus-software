@@ -22,13 +22,6 @@ dependency "rubygems"
 
 relative_path "yajl-ruby"
 
-if platform == "aix"
-  # FIXME: we need to build yajl here not ship a magical blob
-  gsource = "/opt/chef-build/omnibus-software/config/software/aix-files/yajl-ruby-1.1.0.gem"
-else
-  gsource = "yajl-ruby"
-end
-
 if (platform == "solaris2" and Omnibus.config.solaris_compiler == "studio")
   version "sparc"
   source :git => "git://github.com/Atalanta/yajl-ruby"
@@ -42,7 +35,7 @@ if (platform == "solaris2" and Omnibus.config.solaris_compiler == "studio")
 else
   version "1.1.0"
   build do
-    gem ["install #{gsource}",
+    gem ["install yajl-ruby",
          "-v #{gem_version}",
          "-n #{install_dir}/bin",
          "--no-rdoc --no-ri"].join(" ")
