@@ -37,7 +37,8 @@ build do
         when "aix"
         {
             "LDFLAGS" => "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
-            "CFLAGS" => "-I#{install_dir}/embedded/include"
+            "CFLAGS" => "-I#{install_dir}/embedded/include",
+            "AR" => "/usr/bin/ar"
         }
         when "solaris2"
           if Omnibus.config.solaris_compiler == "studio"
