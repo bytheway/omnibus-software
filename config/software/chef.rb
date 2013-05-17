@@ -48,11 +48,10 @@ env =
       raise "Sorry, #{Omnibus.config.solaris_compiler} is not a valid compiler selection."
     end
   when "aix"
-  {
-      # FIXME: where is the -R option???
-      "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
-      "LDFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include"
-  }
+    {
+      "LDFLAGS" => "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
+      "CFLAGS" => "-I#{install_dir}/embedded/include"
+    }
   else
     {
       "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
