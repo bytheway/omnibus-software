@@ -63,7 +63,7 @@ build do
 
   configure_command = case platform
                       when "aix"
-                        ["./Configure",
+                        ["perl", "./Configure",
                          "aix-cc",
                          "--prefix=#{install_dir}/embedded",
                         "--with-zlib-lib=#{install_dir}/embedded/lib",
