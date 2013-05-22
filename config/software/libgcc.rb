@@ -28,7 +28,7 @@ if (platform == "solaris2" && Omnibus.config.solaris_compiler == "gcc")
   end
 end
 
-if platform == aix
+if platform == "aix"
   build do
     if File.exists?("/opt/freeware/lib/libgcc_s.a")
       command "cp /opt/freeware/lib/libgcc_s.a #{install_dir}/embedded/lib/"
