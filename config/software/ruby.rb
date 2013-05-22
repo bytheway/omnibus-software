@@ -65,7 +65,7 @@ env =
   when "aix"
     {
       # these are flags from 1.9.2-p320, -O2 horribly broke requiring openssl...
-      "CFLAGS" => "-I#{install_dir}/embedded/include -DOSSL_NO_CONF_API=1",
+      "CFLAGS" => "-I#{install_dir}/embedded/include -O",
       "LDFLAGS" => "-L#{install_dir}/embedded/lib -Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib",
       "M4" => "/opt/freeware/bin/m4"
     }
