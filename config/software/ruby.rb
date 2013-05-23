@@ -67,7 +67,11 @@ env =
       # these are flags from 1.9.2-p320, -O2 horribly broke requiring openssl...
       "CFLAGS" => "-I#{install_dir}/embedded/include -O",
       "LDFLAGS" => "-L#{install_dir}/embedded/lib -Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib",
-      "M4" => "/opt/freeware/bin/m4"
+      "M4" => "/opt/freeware/bin/m4",
+      # XXX?: not sure if i should use LIBS here, or override TRY_LINK
+      # in the configure script to use 'gcc -Wl,-G' to use shared libs
+      # in configure script tests...
+      "LIBS" => "-lz"
     }
   else
     {
