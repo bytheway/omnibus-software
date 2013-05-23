@@ -1,6 +1,6 @@
---- configure~	2013-05-14 11:42:05 -0500
-+++ configure	2013-05-22 14:49:01 -0500
-@@ -16314,6 +16314,7 @@
+--- ruby-1.9.3-p429/configure	2013-05-14 11:42:05 -0500
++++ ruby-1.9.3-p429.fixed/configure	2013-05-23 17:25:05 -0500
+@@ -16314,11 +16314,12 @@
    aix*) :
      	: ${LDSHARED='$(CC)'}
  			LDSHARED="$LDSHARED ${linker_flag}-G"
@@ -8,3 +8,9 @@
  			EXTDLDFLAGS='-e$(TARGET_ENTRY)'
  			XLDFLAGS="${linker_flag}"'-bE:$(ARCHFILE)'" ${linker_flag}-brtl"
  			XLDFLAGS="$XLDFLAGS ${linker_flag}-blibpath:${prefix}/lib:${LIBPATH:-/usr/lib:/lib}"
+ 			: ${ARCHFILE="ruby.imp"}
+-                        TRY_LINK='$(CC) $(LDFLAGS) -oconftest $(INCFLAGS) -I$(hdrdir) $(CPPFLAGS)'
++                        TRY_LINK='$(LDSHARED) $(LDFLAGS) -oconftest $(INCFLAGS) -I$(hdrdir) $(CPPFLAGS)'
+                         TRY_LINK="$TRY_LINK"' $(CFLAGS) $(src) $(LIBPATH) $(LOCAL_LIBS) $(LIBS)'
+ 			: ${LIBPATHENV=SHLIB_PATH}
+ 			RPATHFLAG=" ${linker_flag}-blibpath:%1\$-s:${prefix}/lib:${LIBPATH:-/usr/lib:/lib}"
