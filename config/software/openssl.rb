@@ -71,7 +71,11 @@ build do
                         "--with-zlib-include=#{install_dir}/embedded/include",
                         "no-rc5",
                         "zlib",
-                        "shared"].join(" ")
+                        "shared",
+                        "-L#{install_dir}/embedded/lib",
+                        "-I#{install_dir}/embedded/include",
+                        "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib",
+                        "-static-libgcc"].join(" ")
                       when "mac_os_x"
                         ["./Configure",
                          "darwin64-x86_64-cc",
