@@ -66,7 +66,7 @@ env =
     {
       # these are flags from 1.9.2-p320, -O2 horribly broke requiring openssl...
       "CFLAGS" => "-I#{install_dir}/embedded/include -O",
-      "LDFLAGS" => "-L#{install_dir}/embedded/lib -Wl,-bsvr4 -Wl,-R:#{install_dir}/embedded/lib:/usr/lib:/lib",
+      "LDFLAGS" => "-L#{install_dir}/embedded/lib -Wl,-bsvr4 -Wl,-R#{install_dir}/embedded/lib",
       "M4" => "/opt/freeware/bin/m4"
     }
   else
