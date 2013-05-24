@@ -36,7 +36,7 @@ build do
           }
         when "aix"
         {
-            "LDFLAGS" => "-bsvr4 -Wl,-R:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
+            "LDFLAGS" => "-bsvr4 -Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
             "CFLAGS" => "-I#{install_dir}/embedded/include",
             "AR" => "/usr/bin/ar",
             "CC" => "xlc",
