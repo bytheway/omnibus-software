@@ -36,11 +36,9 @@ build do
           }
         when "aix"
         {
-            "LDFLAGS" => "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
+            "LDFLAGS" => "-bsvr4 -Wl,-R:#{install_dir}/embedded/lib:/usr/lib:/lib -L#{install_dir}/embedded/lib",
             "CFLAGS" => "-I#{install_dir}/embedded/include",
             "AR" => "/usr/bin/ar",
-            "CC" => "xlc",
-            "CXX" => "xlC"
         }
         when "solaris2"
           if Omnibus.config.solaris_compiler == "studio"
@@ -67,7 +65,7 @@ build do
   configure_command = case platform
                       when "aix"
                         ["perl", "./Configure",
-                         "aix-cc",
+                         "aix-gcc",
                          "--prefix=#{install_dir}/embedded",
                         "--with-zlib-lib=#{install_dir}/embedded/lib",
                         "--with-zlib-include=#{install_dir}/embedded/include",
@@ -76,7 +74,8 @@ build do
                         "shared",
                         "-L#{install_dir}/embedded/lib",
                         "-I#{install_dir}/embedded/include",
-                        "-Wl,-blibpath:#{install_dir}/embedded/lib:/usr/lib:/lib",
+                        "-Wl,-bsvr4",
+                        "-Wl,-R:#{install_dir}/embedded/lib:/usr/lib:/lib",
                         "-static-libgcc"].join(" ")
                       when "mac_os_x"
                         ["./Configure",
