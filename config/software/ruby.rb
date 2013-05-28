@@ -23,7 +23,7 @@ dependency "libedit"
 dependency "openssl"
 dependency "libyaml"
 dependency "libiconv"
-dependency "gdbm" if (platform == "mac_os_x" or platform == "freebsd")
+dependency "gdbm" if (platform == "mac_os_x" or platform == "freebsd" or platform == "aix")
 dependency "libgcc" if (platform == "solaris2" and Omnibus.config.solaris_compiler == "gcc")
 
 # XXX: need p429 for AIX but want to decouple AIX MVP from the tempo of upgrading ruby for everyone else
